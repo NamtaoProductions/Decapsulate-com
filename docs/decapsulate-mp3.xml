@@ -12,13 +12,13 @@
     <lastBuildDate />
     <generator>pfg-rs</generator>
     <image>
-      <url>https://namtaoproductions.github.io/Decapsulate-com/logo-large.png</url>
+      <url>https://namtaoproductions.github.io/Decapsulate-com/logo-large.jpg</url>
       <title>Decapsulate Logo</title>
       <link>https://decapsulate.com</link>
     </image>
     <itunes:author>Namtao Productions</itunes:author>
     <itunes:category text="Technology" />
-    <itunes:image href="https://namtaoproductions.github.io/Decapsulate-com/logo-large.png" />
+    <itunes:image href="https://namtaoproductions.github.io/Decapsulate-com/logo-large.jpg" />
     <itunes:explicit>false</itunes:explicit>
     <itunes:owner>
       <itunes:name>Namtao Productions</itunes:name>
@@ -37,7 +37,7 @@
       <pubDate>episode publish date (probably need chrono)</pubDate>
       <podcast:transcript type="text/plain" url="transcript_url.txt" />
       <itunes:author>Namtao Productions</itunes:author>
-      <itunes:image href="https://namtaoproductions.github.io/Decapsulate-com/logo-large.png" />
+      <itunes:image href="https://namtaoproductions.github.io/Decapsulate-com/logo-large.jpg" />
       <itunes:duration>episode duration</itunes:duration>
       <itunes:explicit>false</itunes:explicit>
       <itunes:subtitle>episode subtitle</itunes:subtitle>
