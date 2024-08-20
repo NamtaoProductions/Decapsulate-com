@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" version="2.0">
+  <channel>
+    <title>Decapsulate</title>
+    <link>https://decapsulate.com</link>
+    <description>Unpacking things.</description>
+    <language>English</language>
+    <copyright>Namtao Productions</copyright>
+    <managingEditor>managing editor</managingEditor>
+    <webMaster>web master / dj</webMaster>
+    <pubDate />
+    <lastBuildDate />
+    <generator>pfg-rs</generator>
+    <image>
+      <url>logo_url</url>
+      <title>Decapsulate Logo</title>
+      <link>https://decapsulate.com</link>
+    </image>
+    <itunes:author>Namtao Productions</itunes:author>
+    <itunes:category text="category" />
+    <itunes:image href="logo_url" />
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:owner>
+      <itunes:name>Namtao Productions</itunes:name>
+      <itunes:email>contact@namtao.com</itunes:email>
+    </itunes:owner>
+    <itunes:subtitle>Unpacking things</itunes:subtitle>
+    <itunes:summary>Unpacking things.</itunes:summary>
+    <itunes:keywords>Non-fiction, technology</itunes:keywords>
+    <item>
+      <title>episode title</title>
+      <link>this is the episode website link</link>
+      <description><![CDATA[episode description]]></description>
+      <author>contact@namtao.com</author>
+      <enclosure url="https://namtaoproductions.github.io/Decapsulate-com/audio//declaration-test.mp3" length="0" type="audio/mpeg" />
+      <guid>https://namtaoproductions.github.io/Decapsulate-com/audio//declaration-test.mp3</guid>
+      <pubDate>episode publish date (probably need chrono)</pubDate>
+      <podcast:transcript type="text/plain" url="transcript_url.txt" />
+      <itunes:author>Namtao Productions</itunes:author>
+      <itunes:image href="logo_url" />
+      <itunes:duration>episode duration</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+      <itunes:subtitle>episode subtitle</itunes:subtitle>
+      <itunes:summary>episode description</itunes:summary>
+      <itunes:keywords>technology</itunes:keywords>
+    </item>
+  </channel>
+</rss>
