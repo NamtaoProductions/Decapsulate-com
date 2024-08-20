@@ -10,9 +10,9 @@ mod pfg;
 fn build_podcast_feed() -> Result<(), Report> {
     let base_url = "https://namtaoproductions.github.io/Decapsulate-com";
     let logo = Logo::builder()
-        .url(format!("{base_url}/logo-large.png"))
+        .url(format!("{base_url}/logo-large.jpg"))
         .title("Decapsulate Logo")
-        .link(format!("{base_url}/logo-large.png"))
+        .link(format!("{base_url}/logo-large.jpg"))
         .build();
     let episode = Episode::builder()
         .title("episode title")
