@@ -12,13 +12,13 @@
     <lastBuildDate />
     <generator>pfg-rs</generator>
     <image>
-      <url>https://namtaoproductions.github.io/Decapsulate-com/logo-large.jpg</url>
+      <url>https://decapsulate.com/logo-large.jpg</url>
       <title>Decapsulate Logo</title>
       <link>https://decapsulate.com</link>
     </image>
     <itunes:author>Namtao Productions</itunes:author>
     <itunes:category text="Technology" />
-    <itunes:image href="https://namtaoproductions.github.io/Decapsulate-com/logo-large.jpg" />
+    <itunes:image href="https://decapsulate.com/logo-large.jpg" />
     <itunes:explicit>false</itunes:explicit>
     <itunes:owner>
       <itunes:name>Namtao Productions</itunes:name>
@@ -29,15 +29,15 @@
     <itunes:keywords>Non-fiction, technology</itunes:keywords>
     <item>
       <title>episode title</title>
-      <link>https://namtaoproductions.github.io/Decapsulate-com/episode/1</link>
+      <link>https://decapsulate.com/episode/1</link>
       <description><![CDATA[episode description]]></description>
       <author>contact@namtao.com</author>
-      <enclosure url="https://namtaoproductions.github.io/Decapsulate-com/audio/declaration-test.mp3" length="0" type="audio/mpeg" />
-      <guid>https://namtaoproductions.github.io/Decapsulate-com/audio/declaration-test.mp3</guid>
+      <enclosure url="https://decapsulate.com/audio/declaration-test.mp3" length="0" type="audio/mpeg" />
+      <guid>https://decapsulate.com/audio/declaration-test.mp3</guid>
       <pubDate>episode publish date (probably need chrono)</pubDate>
       <podcast:transcript type="text/plain" url="transcript_url.txt" />
       <itunes:author>Namtao Productions</itunes:author>
-      <itunes:image href="https://namtaoproductions.github.io/Decapsulate-com/logo-large.jpg" />
+      <itunes:image href="https://decapsulate.com/logo-large.jpg" />
       <itunes:duration>episode duration</itunes:duration>
       <itunes:explicit>false</itunes:explicit>
       <itunes:subtitle>episode subtitle</itunes:subtitle>

@@ -8,7 +8,7 @@ use pulldown_cmark::{html::push_html, Parser};
 mod pfg;
 
 fn build_podcast_feed() -> Result<(), Report> {
-    let base_url = "https://namtaoproductions.github.io/Decapsulate-com";
+    let base_url = "https://decapsulate.com";
     let logo = Logo::builder()
         .url(format!("{base_url}/logo-large.jpg"))
         .title("Decapsulate Logo")
