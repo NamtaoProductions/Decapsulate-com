@@ -10,9 +10,9 @@ mod pfg;
 fn build_podcast_feed() -> Result<(), Report> {
     let base_url = "https://namtaoproductions.github.io/Decapsulate-com";
     let logo = Logo::builder()
-        .url(format!("{base_url}/logo.png"))
+        .url(format!("{base_url}/logo-large.png"))
         .title("Decapsulate Logo")
-        .link(format!("{base_url}/logo.png"))
+        .link(format!("{base_url}/logo-large.png"))
         .build();
     let episode = Episode::builder()
         .title("episode title")
@@ -154,7 +154,7 @@ fn template(inner: impl Renderable) -> impl Renderable {
                                 <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
                                     Credits
                                 </a>
-                                <a href="decapsulate-feed.xml" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
+                                <a href="decapsulate-mp3.xml" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
                                    Podcast Feed
                                 </a>
                             </div>
