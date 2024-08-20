@@ -8,18 +8,18 @@ use pulldown_cmark::{html::push_html, Parser};
 mod pfg;
 
 fn build_podcast_feed() -> Result<(), Report> {
-    let base_url = "https://namtaoproductions.github.io/Decapsulate-com/audio/";
+    let base_url = "https://namtaoproductions.github.io/Decapsulate-com";
     let logo = Logo::builder()
-        .url("logo_url")
-        .title("title")
-        .link("logo_link")
+        .url(format!("{base_url}/logo.png"))
+        .title("Decapsulate Logo")
+        .link(format!("{base_url}/logo.png"))
         .build();
     let episode = Episode::builder()
         .title("episode title")
-        .url(format!("this is the episode website link"))
+        .url(format!("{base_url}/episode/1"))
         .description("episode description")
         .subtitle("episode subtitle")
-        .files(vec!["declaration-test.mp3".into()])
+        .files(vec!["audio/declaration-test.mp3".into()])
         .duration("episode duration")
         .publish_date("episode publish date (probably need chrono)")
         .keywords(vec!["technology".into()])
@@ -45,7 +45,7 @@ fn build_podcast_feed() -> Result<(), Report> {
         .keywords(vec!["Non-fiction".into(), "technology".into()])
         .explicit(false)
         .logo(logo)
-        .category("category")
+        .category("Technology")
         .episodes(episodes)
         .build();
 
