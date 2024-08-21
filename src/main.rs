@@ -1,13 +1,37 @@
-use std::{fs::File, io::Write};
+/// Source: <https://github.com/jamesmunns/pfg-rs>
+use std::{
+    fs::{read_dir, File},
+    io::Write,
+    path::PathBuf,
+};
 
 use color_eyre::{Report, Result};
-use hypertext::{html_elements, maud, rsx, GlobalAttributes, Renderable, Rendered};
+use hypertext::{html_elements, maud, rsx, Attribute, GlobalAttributes, Renderable, Rendered};
 use pfg::{generate_xmls, Episode, Logo, Podcast};
 use pulldown_cmark::{html::push_html, Parser};
+use serde::{Deserialize, Serialize};
 
 mod pfg;
 
-fn build_podcast_feed() -> Result<(), Report> {
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
+struct Metadata {
+    head: String,
+    assignee: String,
+    base: String,
+    draft: bool,
+    issue: Option<String>,
+    reviewers: Vec<String>,
+    tags: Vec<String>,
+    title: Option<String>,
+}
+
+fn get_metadata(md_string: &str) -> Metadata {
+    let split_md = md_string.split("---\n").collect::<Vec<&str>>();
+    let yaml_string = split_md[1];
+    serde_yaml::from_str(yaml_string).expect("valid frontmatter in markdown")
+}
+
+fn build_podcast_feed() -> Result<()> {
     let base_url = "https://decapsulate.com";
     let logo = Logo::builder()
         .url(format!("{base_url}/logo-large.jpg"))
@@ -53,7 +77,7 @@ fn build_podcast_feed() -> Result<(), Report> {
 
     for (format, data) in &xmls {
         let filename = format!("docs/decapsulate-{format}.xml");
-        println!("Writing '{}'...", &filename);
+        println!("Writing {}", &filename);
 
         let mut file = File::create(&filename).expect("file system accessible");
         let unformatted = data.to_string();
@@ -65,7 +89,17 @@ fn build_podcast_feed() -> Result<(), Report> {
     Ok(())
 }
 
+fn get_files_in_folder(path: &str) -> Result<Vec<PathBuf>> {
+    let entries = read_dir(path)?;
+    let all: Vec<PathBuf> = entries
+        .filter_map(|entry| Some(entry.ok()?.path()))
+        .collect();
+    Ok(all)
+}
+
 fn main() -> Result<(), Report> {
+    let episodes = get_files_in_folder("episodes/").map(|e| e);
+
     build_podcast_feed()?;
     build(vec![
         ("docs/index.html", index().render()),
@@ -175,12 +209,40 @@ fn template(inner: impl Renderable) -> impl Renderable {
     }
 }
 
+#[allow(unused)] // it's used inside `rsx!`
+trait HtmxAttributes: GlobalAttributes {
+    #[allow(non_upper_case_globals)]
+    const xmlns: Attribute = Attribute;
+    #[allow(non_upper_case_globals)]
+    const property: Attribute = Attribute;
+}
+impl<T: GlobalAttributes> HtmxAttributes for T {}
+
 fn footer() -> impl Renderable {
     rsx! {
         <br/>
         <br/>
         <br/>
         <br/>
+        <p class="border-neutral-900"
+           xmlns="http://creativecommons.org/ns#"
+           xmlns="http://purl.org/dc/terms/">
+            <a property="dct:title" rel="cc:attributionURL" href="https://decapsulate.com">
+                Decapsulate Podcast
+            </a>
+            by
+            <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://decapsulate.com">
+                Namtao Productions
+            </a>
+            is licensed under
+            <a href="https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1" rel="license noopener noreferrer" style="display:inline-block;">
+                CC BY-NC 4.0
+                <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="">
+                <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="">
+                <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="">
+            </a>
+        </p>
+
         <p class="border-neutral-900 border-8 text-xs">"Decapsulate is a NAMTAO production, made with <3 in 2024"</p>
     }
 }
@@ -188,6 +250,7 @@ fn footer() -> impl Renderable {
 fn build(pages: Vec<(&str, Rendered<String>)>) -> Result<(), Report> {
     std::fs::create_dir_all("docs")?;
     for (page, fun) in pages {
+        println!("Writing {page}");
         let output = fun.into_inner();
         std::fs::write(page, output)?;
     }
