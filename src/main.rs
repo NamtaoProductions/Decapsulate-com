@@ -133,8 +133,8 @@ fn index(episodes: Vec<Metadata>) -> impl Renderable {
             div ."basis-2/3" {
                 h2 .text-4xl { "Episodes" }
                 ol .list-decimal {
-                    @for epiode in episodes {
-                        li { a.underline href="" { "Pilot: Writing & Mental Health" } }
+                    @for episode in episodes {
+                        li { a.underline href="" { (episode.title) } }
                     }
                 }
             }
