@@ -28,13 +28,30 @@
     <itunes:summary>Unpacking things.</itunes:summary>
     <itunes:keywords>Non-fiction, technology</itunes:keywords>
     <item>
-      <title>episode title</title>
+      <title>Pilot: Writing &amp; Mental Health</title>
       <link>https://decapsulate.com/episode/1</link>
       <description><![CDATA[episode description]]></description>
       <author>contact@namtao.com</author>
       <enclosure url="https://decapsulate.com/audio/declaration-test.mp3" length="0" type="audio/mpeg" />
       <guid>https://decapsulate.com/audio/declaration-test.mp3</guid>
-      <pubDate>episode publish date (probably need chrono)</pubDate>
+      <pubDate>2024-08-30</pubDate>
+      <podcast:transcript type="text/plain" url="transcript_url.txt" />
+      <itunes:author>Namtao Productions</itunes:author>
+      <itunes:image href="https://decapsulate.com/logo-large.jpg" />
+      <itunes:duration>episode duration</itunes:duration>
+      <itunes:explicit>false</itunes:explicit>
+      <itunes:subtitle>episode subtitle</itunes:subtitle>
+      <itunes:summary>episode description</itunes:summary>
+      <itunes:keywords>technology</itunes:keywords>
+    </item>
+    <item>
+      <title>A second episode</title>
+      <link>https://decapsulate.com/episode/1</link>
+      <description><![CDATA[episode description]]></description>
+      <author>contact@namtao.com</author>
+      <enclosure url="https://decapsulate.com/audio/declaration-test.mp3" length="0" type="audio/mpeg" />
+      <guid>https://decapsulate.com/audio/declaration-test.mp3</guid>
+      <pubDate>2025-08-30</pubDate>
       <podcast:transcript type="text/plain" url="transcript_url.txt" />
       <itunes:author>Namtao Productions</itunes:author>
       <itunes:image href="https://decapsulate.com/logo-large.jpg" />

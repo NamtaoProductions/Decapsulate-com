@@ -1,11 +1,11 @@
 /// Source: <https://github.com/jamesmunns/pfg-rs>
 use std::{
-    fs::{read_dir, File},
+    fs::{read_dir, read_to_string, File},
     io::Write,
     path::PathBuf,
 };
 
-use color_eyre::{Report, Result};
+use color_eyre::eyre::{eyre, Report, Result, WrapErr};
 use hypertext::{html_elements, maud, rsx, Attribute, GlobalAttributes, Renderable, Rendered};
 use pfg::{generate_xmls, Episode, Logo, Podcast};
 use pulldown_cmark::{html::push_html, Parser};
@@ -15,43 +15,37 @@ mod pfg;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 struct Metadata {
-    head: String,
-    assignee: String,
-    base: String,
-    draft: bool,
-    issue: Option<String>,
-    reviewers: Vec<String>,
-    tags: Vec<String>,
-    title: Option<String>,
+    episode: u32,
+    title: String,
+    date: String,
 }
 
-fn get_metadata(md_string: &str) -> Metadata {
-    let split_md = md_string.split("---\n").collect::<Vec<&str>>();
-    let yaml_string = split_md[1];
-    serde_yaml::from_str(yaml_string).expect("valid frontmatter in markdown")
+impl Metadata {
+    fn episode(&self, base_url: &str) -> Episode {
+        Episode::builder()
+            .title(self.title.clone())
+            .url(format!("{base_url}/episode/1"))
+            .description("episode description")
+            .subtitle("episode subtitle")
+            .files(vec!["audio/declaration-test.mp3".into()])
+            .duration("episode duration")
+            .publish_date(self.date.clone())
+            .keywords(vec!["technology".into()])
+            .length_bytes(0)
+            .transcript_url("transcript_url.txt")
+            .build()
+    }
 }
 
-fn build_podcast_feed() -> Result<()> {
+fn build_podcast_feed(metadatas: &[Metadata]) -> Result<()> {
     let base_url = "https://decapsulate.com";
     let logo = Logo::builder()
         .url(format!("{base_url}/logo-large.jpg"))
         .title("Decapsulate Logo")
         .link(format!("{base_url}/logo-large.jpg"))
         .build();
-    let episode = Episode::builder()
-        .title("episode title")
-        .url(format!("{base_url}/episode/1"))
-        .description("episode description")
-        .subtitle("episode subtitle")
-        .files(vec!["audio/declaration-test.mp3".into()])
-        .duration("episode duration")
-        .publish_date("episode publish date (probably need chrono)")
-        .keywords(vec!["technology".into()])
-        .length_bytes(0)
-        .transcript_url("transcript_url.txt")
-        .build();
 
-    let episodes = vec![episode];
+    let episodes = metadatas.iter().map(|m| m.episode(base_url)).collect();
 
     let podcast = Podcast::builder()
         .title("Decapsulate")
@@ -97,19 +91,38 @@ fn get_files_in_folder(path: &str) -> Result<Vec<PathBuf>> {
     Ok(all)
 }
 
-fn main() -> Result<(), Report> {
-    let episodes = get_files_in_folder("episodes/").map(|e| e);
+#[allow(clippy::manual_let_else)]
+fn get_metadata(md_string: &str) -> Result<Metadata> {
+    let frontmatter = md_string.split("---\n").collect::<Vec<&str>>();
+    let yaml_string = frontmatter
+        .get(1)
+        .ok_or_else(|| eyre!("Invalid frontmatter: {}", md_string))?;
+    //TODO: Have to wrap the error due to deserialisation trait bug.
+    serde_yaml::from_str(yaml_string).wrap_err(format!("Bad YAML: \n{md_string}"))
+}
 
-    build_podcast_feed()?;
+fn main() -> Result<(), Report> {
+    color_eyre::install()?;
+    let episodes: Result<Vec<Metadata>> = get_files_in_folder("episodes/")?
+        .into_iter()
+        .map(read_to_string)
+        .map(|yaml| get_metadata(&yaml?))
+        .collect();
+    let mut validated_episodes = episodes?;
+    validated_episodes.sort_by_key(|m| m.episode);
+
+    dbg!(&validated_episodes);
+
+    build_podcast_feed(&validated_episodes)?;
     build(vec![
-        ("docs/index.html", index().render()),
+        ("docs/index.html", index(validated_episodes).render()),
         //("docs/feed.rss", Rendered(feed())),
     ])?;
     println!("Built site OK!");
     Ok(())
 }
 
-fn index() -> impl Renderable {
+fn index(episodes: Vec<Metadata>) -> impl Renderable {
     template(maud! {
         div ."sm:flex" ."s:flex-row" ."gap-20" {
             div."basis-1/3" {
@@ -120,9 +133,9 @@ fn index() -> impl Renderable {
             div ."basis-2/3" {
                 h2 .text-4xl { "Episodes" }
                 ol .list-decimal {
-                    li { a.underline href="" { "Pilot: Writing & Mental Health" } }
-                    li {  a.underline href="" { "GPT & Enshittification" } }
-                    li {  a.underline href="" { "Future episodes..." } }
+                    @for epiode in episodes {
+                        li { a.underline href="" { "Pilot: Writing & Mental Health" } }
+                    }
                 }
             }
         }
