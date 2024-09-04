@@ -13,26 +13,31 @@ use serde::{Deserialize, Serialize};
 
 mod pfg;
 
-#[derive(Serialize, Deserialize, PartialEq, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 struct Metadata {
     episode: u32,
     title: String,
     date: String,
+    description: String,
+    keywords: Vec<String>,
 }
 
 impl Metadata {
     fn episode(&self, base_url: &str) -> Episode {
+        let num = self.episode;
+
+        let url = format!("{base_url}/episode/{num}");
         Episode::builder()
             .title(self.title.clone())
-            .url(format!("{base_url}/episode/1"))
-            .description("episode description")
+            .url(url.clone())
+            .description(self.description.clone())
             .subtitle("episode subtitle")
-            .files(vec!["audio/declaration-test.mp3".into()])
-            .duration("episode duration")
-            .publish_date(self.date.clone())
+            .files(vec![format!("DC{num}.mp3")])
+            .duration("1") // TODO calculate this
+            .publish_date(self.date.clone()) // TODO validate this
             .keywords(vec!["technology".into()])
             .length_bytes(0)
-            .transcript_url("transcript_url.txt")
+            .transcript_url(format!("{url}.txt")) // TODO
             .build()
     }
 }
@@ -49,15 +54,15 @@ fn build_podcast_feed(metadatas: &[Metadata]) -> Result<()> {
 
     let podcast = Podcast::builder()
         .title("Decapsulate")
-        .description("Unpacking things.")
+        .description("Unpacking life.")
         .subtitle("Unpacking things")
         .author("Namtao Productions")
         .author_email("contact@namtao.com")
         .website("https://decapsulate.com")
         .language("English")
         .copyright("Namtao Productions")
-        .webmaster("web master / dj")
-        .managing_editor("managing editor")
+        .webmaster("TODO WEBMASTER")
+        .managing_editor("TODO MANAGING EDITOR")
         .formats(vec!["mp3".into()])
         .hosting_base_url(base_url)
         .keywords(vec!["Non-fiction".into(), "technology".into()])
@@ -71,12 +76,12 @@ fn build_podcast_feed(metadatas: &[Metadata]) -> Result<()> {
 
     for (format, data) in &xmls {
         let filename = format!("docs/decapsulate-{format}.xml");
-        println!("Writing {}", &filename);
 
         let mut file = File::create(&filename).expect("file system accessible");
         let unformatted = data.to_string();
         let formatted = pfg::format_xml(unformatted.as_bytes())
             .expect("machine built xml can be machine formatted");
+        println!("Writing {}", &filename);
         file.write_all(formatted.as_bytes())?;
     }
 
@@ -114,12 +119,24 @@ fn main() -> Result<(), Report> {
     dbg!(&validated_episodes);
 
     build_podcast_feed(&validated_episodes)?;
-    build(vec![
-        ("docs/index.html", index(validated_episodes).render()),
-        //("docs/feed.rss", Rendered(feed())),
-    ])?;
+    build(
+        validated_episodes.clone(),
+        vec![(
+            "docs/index.html",
+            index(validated_episodes.clone()).render(),
+        )],
+    )?;
     println!("Built site OK!");
     Ok(())
+}
+
+fn build_episode(episode: Metadata) -> impl Renderable {
+    template(maud! {
+        div ."sm:flex" ."s:flex-row" ."gap-20" {
+            "test episode page"
+            ( episode.title )
+        }
+    })
 }
 
 fn index(episodes: Vec<Metadata>) -> impl Renderable {
@@ -134,7 +151,8 @@ fn index(episodes: Vec<Metadata>) -> impl Renderable {
                 h2 .text-4xl { "Episodes" }
                 ol .list-decimal {
                     @for episode in episodes {
-                        li { a.underline href="" { (episode.title) } }
+                        @let num = episode.episode;
+                        li { a.underline href=(format!("/episodes/{num}/")) { (episode.title) } }
                     }
                 }
             }
@@ -160,8 +178,8 @@ fn template(inner: impl Renderable) -> impl Renderable {
         <html lang="en">
             <head>
                 <meta http-equiv="x-clacks-overhead" content="GNU Terry Pratchett" />
-                <link rel="icon" href="favicon.png"/>
-                <script src="tw.js"></script>
+                <link rel="icon" href="/favicon.png"/>
+                <script src="/tw.js"></script>
 
             <script>
                 r#" tailwind.config = {
@@ -170,7 +188,7 @@ fn template(inner: impl Renderable) -> impl Renderable {
                             center: true,
                         },
                         fontFamily: {
-                            "mono": "courier, monospace",
+                            mono: courier, monospace,
                         }
                     }
                 }"#
@@ -237,35 +255,26 @@ fn footer() -> impl Renderable {
         <br/>
         <br/>
         <br/>
-        <p class="border-neutral-900"
-           xmlns="http://creativecommons.org/ns#"
-           xmlns="http://purl.org/dc/terms/">
-            <a property="dct:title" rel="cc:attributionURL" href="https://decapsulate.com">
-                Decapsulate Podcast
-            </a>
-            by
-            <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://decapsulate.com">
-                Namtao Productions
-            </a>
-            is licensed under
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1" rel="license noopener noreferrer" style="display:inline-block;">
-                CC BY-NC 4.0
-                <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="">
-                <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="">
-                <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="">
-            </a>
-        </p>
 
-        <p class="border-neutral-900 border-8 text-xs">"Decapsulate is a NAMTAO production, made with <3 in 2024"</p>
+        <p class="border-neutral-900 border-8 text-xs">"Decapsulate is a NAMTAO production, licensed under CC BY-NC 4.0, made with <3 in 2024"</p>
     }
 }
 
-fn build(pages: Vec<(&str, Rendered<String>)>) -> Result<(), Report> {
+fn build(episodes: Vec<Metadata>, pages: Vec<(&str, Rendered<String>)>) -> Result<(), Report> {
     std::fs::create_dir_all("docs")?;
     for (page, fun) in pages {
         println!("Writing {page}");
         let output = fun.into_inner();
         std::fs::write(page, output)?;
+    }
+    for episode in episodes {
+        let num = episode.episode;
+        let folder = format!("docs/episodes/{num}/");
+        let path = format!("{folder}index.html");
+        std::fs::create_dir_all(&folder)?;
+        println!("Writing {path}");
+        let output = build_episode(episode.clone());
+        std::fs::write(path, output.render().into_inner())?;
     }
     Ok(())
 }
