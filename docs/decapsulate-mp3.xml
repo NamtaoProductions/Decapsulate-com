@@ -30,7 +30,7 @@
     <item>
       <title>Pilot: Writing &amp; Mental Health</title>
       <link>https://decapsulate.com/episode//episode/1</link>
-      <description><![CDATA[This is the Episode description.]]></description>
+      <description><![CDATA[In this first episode, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.]]></description>
       <author>contact@namtao.com</author>
       <enclosure url="https://decapsulate.com/DC1.mp3" length="0" type="audio/mpeg" />
       <guid>https://decapsulate.com/DC1.mp3</guid>
@@ -41,7 +41,7 @@
       <itunes:duration>1</itunes:duration>
       <itunes:explicit>false</itunes:explicit>
       <itunes:subtitle>episode subtitle</itunes:subtitle>
-      <itunes:summary>This is the Episode description.</itunes:summary>
+      <itunes:summary>In this first episode, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.</itunes:summary>
       <itunes:keywords>technology</itunes:keywords>
     </item>
   </channel>

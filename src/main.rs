@@ -152,6 +152,7 @@ fn build_episode(episode: Metadata) -> impl Renderable {
         .expect("By this stage, the transcript has been attached");
     let transcript = Markdown(transcript_str);
     let num = episode.episode;
+
     template(maud_move! {
         h1 .text-4xl { ( episode.title ) }
         div .border-8 .border-transparent {
@@ -161,8 +162,9 @@ fn build_episode(episode: Metadata) -> impl Renderable {
         }
         p .italic { ( episode.date ) }
         div .border-8 .border-transparent { audio controls src=( format!("/audio/DC{num}.mp3")) {} }
-        div .border-8 .border-transparent {}
+        br;
         div { ( episode.description ) }
+        br;
         div { ( transcript ) }
     })
 }
