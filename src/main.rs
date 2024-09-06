@@ -225,7 +225,7 @@ fn template(inner: impl Renderable) -> impl Renderable {
             </script>
 
             <meta charset="utf-8"/>
-            <meta name="description" content="When you see this logo on any artwork, whether painting, poetry, or prose, you know that it was made by a human just like you."/>
+            <meta name="description" content="Unpacking life with Tris & Robin."/>
 
             <meta content="width=device-width, initial-scale=1" name="viewport"/>
             <title class="text-4xl" >"Decapsulate Podcast"</title>
