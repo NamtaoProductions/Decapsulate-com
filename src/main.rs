@@ -1,4 +1,6 @@
-/// Source: <https://github.com/jamesmunns/pfg-rs>
+/// TODO This MVP needs HUGE refactoring.
+/// - Split into modules (core, templates, pages, feed)
+/// - Switch to a sass-based css framework, from Tailwind
 use std::{
     fs::{read_dir, read_to_string, File},
     io::Write,
@@ -6,7 +8,9 @@ use std::{
 };
 
 use color_eyre::eyre::{eyre, Report, Result, WrapErr};
-use hypertext::{html_elements, maud, rsx, Attribute, GlobalAttributes, Renderable, Rendered};
+use hypertext::{
+    html_elements, maud, maud_move, rsx, Attribute, GlobalAttributes, Renderable, Rendered,
+};
 use pfg::{generate_xmls, Episode, Logo, Podcast};
 use pulldown_cmark::{html::push_html, Parser};
 use serde::{Deserialize, Serialize};
@@ -20,13 +24,14 @@ struct Metadata {
     date: String,
     description: String,
     keywords: Vec<String>,
+    transcript: Option<String>,
 }
 
 impl Metadata {
     fn episode(&self, base_url: &str) -> Episode {
+        let path = self.url();
         let num = self.episode;
-
-        let url = format!("{base_url}/episode/{num}");
+        let url = format!("{base_url}/episode/{path}");
         Episode::builder()
             .title(self.title.clone())
             .url(url.clone())
@@ -39,6 +44,11 @@ impl Metadata {
             .length_bytes(0)
             .transcript_url(format!("{url}.txt")) // TODO
             .build()
+    }
+
+    fn url(&self) -> String {
+        let num = self.episode;
+        format!("/episode/{num}")
     }
 }
 
@@ -103,7 +113,14 @@ fn get_metadata(md_string: &str) -> Result<Metadata> {
         .get(1)
         .ok_or_else(|| eyre!("Invalid frontmatter: {}", md_string))?;
     //TODO: Have to wrap the error due to deserialisation trait bug.
-    serde_yaml::from_str(yaml_string).wrap_err(format!("Bad YAML: \n{md_string}"))
+    let yaml_metadata: Result<Metadata> =
+        serde_yaml::from_str(yaml_string).wrap_err(format!("Bad YAML: \n{md_string}"));
+    //TODO md to html
+    let transcript = frontmatter.get(2).map(std::string::ToString::to_string);
+    yaml_metadata.map(|mut m| {
+        m.transcript = transcript;
+        m
+    })
 }
 
 fn main() -> Result<(), Report> {
@@ -115,8 +132,6 @@ fn main() -> Result<(), Report> {
         .collect();
     let mut validated_episodes = episodes?;
     validated_episodes.sort_by_key(|m| m.episode);
-
-    dbg!(&validated_episodes);
 
     build_podcast_feed(&validated_episodes)?;
     build(
@@ -131,11 +146,24 @@ fn main() -> Result<(), Report> {
 }
 
 fn build_episode(episode: Metadata) -> impl Renderable {
-    template(maud! {
-        div ."sm:flex" ."s:flex-row" ."gap-20" {
-            "test episode page"
-            ( episode.title )
+    let transcript_str = episode
+        .transcript
+        .clone()
+        .expect("By this stage, the transcript has been attached");
+    let transcript = Markdown(transcript_str);
+    let num = episode.episode;
+    template(maud_move! {
+        h1 .text-4xl { ( episode.title ) }
+        div .border-8 .border-transparent {
+            @for keyword in episode.keywords {
+                label .bg-indigo-500 .border-4 .border-neutral-900  { ( keyword ) }
+            }
         }
+        p .italic { ( episode.date ) }
+        div .border-8 .border-transparent { audio controls src=( format!("/audio/DC{num}.mp3")) {} }
+        div .border-8 .border-transparent {}
+        div { ( episode.description ) }
+        div { ( transcript ) }
     })
 }
 
@@ -161,12 +189,12 @@ fn index(episodes: Vec<Metadata>) -> impl Renderable {
 }
 
 #[allow(dead_code)]
-struct Markdown<'a>(&'a str);
+struct Markdown(String);
 
-impl Renderable for Markdown<'_> {
+impl Renderable for Markdown {
     fn render_to(self, output: &mut String) {
         let mut output_html = String::new();
-        let parser = Parser::new(self.0);
+        let parser = Parser::new(&self.0);
         push_html(&mut output_html, parser);
         output.push_str(output_html.as_str());
     }
@@ -206,20 +234,20 @@ fn template(inner: impl Renderable) -> impl Renderable {
 
                     <nav class="bg-neutral-800 flex items-center justify-between flex-wrap p-6">
                         <div class="flex items-center flex-shrink-0 text-white mr-6">
-                            <span class="font-semibold text-xl tracking-tight">Decapsulate Podcast</span>
+                            <span class="font-semibold text-xl tracking-tight"><a href="/">Decapsulate Podcast</a></span>
                         </div>
                         <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                             <div class="text-xl lg:flex-grow">
-                                <a href="index.html#about" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                    About
-                                </a>
-                                <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                    Listen
-                                </a>
-                                <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                    Credits
-                                </a>
-                                <a href="decapsulate-mp3.xml" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
+                                // <a href="index.html#about" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
+                                //     About
+                                // </a>
+                                // <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
+                                //     Listen
+                                // </a>
+                                // <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
+                                //     Credits
+                                // </a>
+                                <a href="/decapsulate-mp3.xml" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
                                    Podcast Feed
                                 </a>
                             </div>

@@ -29,13 +29,13 @@
     <itunes:keywords>Non-fiction, technology</itunes:keywords>
     <item>
       <title>Pilot: Writing &amp; Mental Health</title>
-      <link>https://decapsulate.com/episode/1</link>
+      <link>https://decapsulate.com/episode//episode/1</link>
       <description><![CDATA[This is the Episode description.]]></description>
       <author>contact@namtao.com</author>
       <enclosure url="https://decapsulate.com/DC1.mp3" length="0" type="audio/mpeg" />
       <guid>https://decapsulate.com/DC1.mp3</guid>
       <pubDate>2024-08-30</pubDate>
-      <podcast:transcript type="text/plain" url="https://decapsulate.com/episode/1.txt" />
+      <podcast:transcript type="text/plain" url="https://decapsulate.com/episode//episode/1.txt" />
       <itunes:author>Namtao Productions</itunes:author>
       <itunes:image href="https://decapsulate.com/logo-large.jpg" />
       <itunes:duration>1</itunes:duration>

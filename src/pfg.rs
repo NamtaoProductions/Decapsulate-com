@@ -1,7 +1,7 @@
 #![allow(clippy::unwrap_used)]
 #![allow(clippy::pedantic)]
 #![allow(clippy::nursery)]
-
+/// Module Source: <https://github.com/jamesmunns/pfg-rs>
 use bon::builder;
 use color_eyre::{Report, Result};
 use rss::{
