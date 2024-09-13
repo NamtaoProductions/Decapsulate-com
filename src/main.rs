@@ -31,7 +31,7 @@ impl Metadata {
     fn episode(&self, base_url: &str) -> Episode {
         let path = self.url();
         let num = self.episode;
-        let url = format!("{base_url}/episode/{path}");
+        let url = format!("{base_url}/audio/{path}");
         Episode::builder()
             .title(self.title.clone())
             .url(url.clone())
