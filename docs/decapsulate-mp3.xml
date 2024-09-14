@@ -28,20 +28,20 @@
     <itunes:summary>Unpacking life.</itunes:summary>
     <itunes:keywords>Non-fiction, technology</itunes:keywords>
     <item>
-      <title>Pilot: Writing &amp; Mental Health</title>
-      <link>https://decapsulate.com/audio//episode/1</link>
-      <description><![CDATA[In this first episode, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.]]></description>
+      <title>Pilot Teaser: On Writing &amp; Mental Health</title>
+      <link>https://decapsulate.com/episodes/1</link>
+      <description><![CDATA[In this patreon-only pilot, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.]]></description>
       <author>contact@namtao.com</author>
-      <enclosure url="https://decapsulate.com/DC1.mp3" length="0" type="audio/mpeg" />
-      <guid>https://decapsulate.com/DC1.mp3</guid>
+      <enclosure url="https://decapsulate.com/audio/DC1.mp3" length="0" type="audio/mpeg" />
+      <guid>https://decapsulate.com/audio/DC1.mp3</guid>
       <pubDate>2024-08-30</pubDate>
-      <podcast:transcript type="text/plain" url="https://decapsulate.com/audio//episode/1.txt" />
+      <podcast:transcript type="text/plain" url="https://decapsulate.com/episodes/1.txt" />
       <itunes:author>Namtao Productions</itunes:author>
       <itunes:image href="https://decapsulate.com/logo-large.jpg" />
       <itunes:duration>1</itunes:duration>
       <itunes:explicit>false</itunes:explicit>
       <itunes:subtitle>episode subtitle</itunes:subtitle>
-      <itunes:summary>In this first episode, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.</itunes:summary>
+      <itunes:summary>In this patreon-only pilot, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.</itunes:summary>
       <itunes:keywords>technology</itunes:keywords>
     </item>
   </channel>

@@ -29,15 +29,15 @@ struct Metadata {
 
 impl Metadata {
     fn episode(&self, base_url: &str) -> Episode {
-        let path = self.url();
         let num = self.episode;
-        let url = format!("{base_url}/audio/{path}");
+        let url = format!("{base_url}/episodes/{num}"); //TODO refactor this into url
+                                                        //method for mp3 and txt
         Episode::builder()
             .title(self.title.clone())
             .url(url.clone())
             .description(self.description.clone())
             .subtitle("episode subtitle")
-            .files(vec![format!("DC{num}.mp3")])
+            .files(vec![format!("audio/DC{num}.mp3")])
             .duration("1") // TODO calculate this
             .publish_date(self.date.clone()) // TODO validate this
             .keywords(vec!["technology".into()])
@@ -174,7 +174,7 @@ fn index(episodes: Vec<Metadata>) -> impl Renderable {
         div ."sm:flex" ."s:flex-row" ."gap-20" {
             div."basis-1/3" {
                 div .flex.w-full.justify-center {
-                    img src="logo.png" alt="logo" {}
+                    img src="logo.jpg" alt="logo" {}
                 }
             }
             div ."basis-2/3" {

@@ -1,8 +1,8 @@
 ---
 episode: 1
-title: "Pilot: Writing & Mental Health"
+title: "Pilot Teaser: On Writing & Mental Health"
 date: 2024-08-30
-description: "In this first episode, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain."
+description: In this patreon-only pilot, Tris and Robin introduce themselves and share tips for writing podcasts, blogs, videos and how to survive inside a creative brain.
 keywords:
   - writing
   - technology
@@ -26,6 +26,7 @@ keywords:
 🔗 LINKS
 
 Ours:
+
 - robinwinslow.uk/
 - noboilerplate.org/
 - lostterminal.com/
@@ -33,9 +34,10 @@ Ours:
 - phosphenecatalogue.com/
 
 External:
-- www.relay.fm/cortex
-- www.youtube.com/@CGPGrey
-- www.nightvalepresents.com/startwiththis
+
+- <www.relay.fm/cortex>
+- <www.youtube.com/@CGPGrey>
+- <www.nightvalepresents.com/startwiththis>
 - pluralistic.net/
 
 🧑 CREDITS
@@ -43,6 +45,7 @@ External:
 Decapsulate is a NAMTAO Production (namtao.com)
 
 It is hosted by:
+
 - Tristram Oaten (mastodon.social/@0atman)
 - Robin Winslow (union.place/@nottrobin)
 
