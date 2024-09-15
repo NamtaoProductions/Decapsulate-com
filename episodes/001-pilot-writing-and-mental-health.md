@@ -9,7 +9,7 @@ keywords:
   - adhd
 ---
 
-📖 CHAPTERS
+## 📖 CHAPTERS
 
 - 00:00 Teaser
 - 00:16 Introductions
@@ -23,30 +23,30 @@ keywords:
 - 01:07:59 Decapsulate upload schedule discussion
 - 01:13:31 Conclusion
 
-🔗 LINKS
+## 🔗 LINKS
 
-Ours:
+### Ours
 
-- robinwinslow.uk/
-- noboilerplate.org/
-- lostterminal.com/
-- modemprometheus.com/
-- phosphenecatalogue.com/
+- <https://robinwinslow.uk>
+- <https://noboilerplate.org>
+- <https://lostterminal.com>
+- <https://modemprometheus.com>
+- <https://phosphenecatalogue.com>
 
-External:
+### External
 
-- <www.relay.fm/cortex>
-- <www.youtube.com/@CGPGrey>
-- <www.nightvalepresents.com/startwiththis>
-- pluralistic.net/
+- <https://www.relay.fm/cortex>
+- <https://www.youtube.com/@CGPGrey>
+- <https://www.nightvalepresents.com/startwiththis>
+- <https://pluralistic.net/>
 
-🧑 CREDITS
+## 🧑 CREDITS
 
 Decapsulate is a NAMTAO Production (namtao.com)
 
 It is hosted by:
 
-- Tristram Oaten (mastodon.social/@0atman)
-- Robin Winslow (union.place/@nottrobin)
+- Tristram Oaten (<https://mastodon.social/@0atman>)
+- Robin Winslow (<https://union.place/@nottrobin>)
 
-This work is BrainMade brainmade.org
+This work is BrainMade (<https://brainmade.org>)

@@ -154,35 +154,46 @@ fn build_episode(episode: Metadata) -> impl Renderable {
     let num = episode.episode;
 
     template(maud_move! {
-        h1 .text-4xl { ( episode.title ) }
-        div .border-8 .border-transparent {
-            @for keyword in episode.keywords {
-                label .bg-indigo-500 .border-4 .border-neutral-900  { ( keyword ) }
+        hgroup {
+            h1 { ( episode.title ) }
+            p { ( episode.date ) }
+        }
+        section {
+            div {
+                @for keyword in episode.keywords {
+                    kbd { ( keyword ) }
+                    " "
+                }
             }
         }
-        p .italic { ( episode.date ) }
-        div .border-8 .border-transparent { audio controls src=( format!("/audio/DC{num}.mp3")) {} }
-        br;
-        div { ( episode.description ) }
-        br;
-        div { ( transcript ) }
+        section {
+            div { audio controls src=( format!("/audio/DC{num}.mp3")) {} }
+        }
+        blockquote {
+            div { ( episode.description ) }
+        }
+        section {
+            div { ( transcript ) }
+        }
     })
 }
 
 fn index(episodes: Vec<Metadata>) -> impl Renderable {
     template(maud! {
-        div ."sm:flex" ."s:flex-row" ."gap-20" {
-            div."basis-1/3" {
-                div .flex.w-full.justify-center {
-                    img src="logo.jpg" alt="logo" {}
-                }
+        div .grid {
+            div {
+                img src="logo.jpg" alt="logo" width="400px" {}
             }
-            div ."basis-2/3" {
-                h2 .text-4xl { "Episodes" }
-                ol .list-decimal {
-                    @for episode in episodes {
-                        @let num = episode.episode;
-                        li { a.underline href=(format!("/episodes/{num}/")) { (episode.title) } }
+            div {
+                header {
+                    h2 { "Episodes" }
+                }
+                div {
+                    ol {
+                        @for episode in episodes {
+                            @let num = episode.episode;
+                            li { a.underline href=(format!("/episodes/{num}/")) { (episode.title) } }
+                        }
                     }
                 }
             }
@@ -207,64 +218,47 @@ fn template(inner: impl Renderable) -> impl Renderable {
         <!DOCTYPE html>
         <html lang="en">
             <head>
-                <meta http-equiv="x-clacks-overhead" content="GNU Terry Pratchett" />
+                <title>"Decapsulate Podcast"</title>
+                <meta name="description" content="Unpacking life with Tris & Robin."/>
                 <link rel="icon" href="/favicon.png"/>
-                <script src="/tw.js"></script>
 
-            <script>
-                r#" tailwind.config = {
-                    theme: {
-                        container: {
-                            center: true,
-                        },
-                        fontFamily: {
-                            mono: courier, monospace,
-                        }
-                    }
-                }"#
-            </script>
-
-            <meta charset="utf-8"/>
-            <meta name="description" content="Unpacking life with Tris & Robin."/>
-
-            <meta content="width=device-width, initial-scale=1" name="viewport"/>
-            <title class="text-4xl" >"Decapsulate Podcast"</title>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta name="color-scheme" content="light dark">
+                <meta http-equiv="x-clacks-overhead" content="GNU Terry Pratchett" />
+                <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+                >
 
             </head>
 
-                <body class="bg-neutral-900 text-white font-mono text-sm md:text-2xl mx-auto w-full">
-
-                    <nav class="bg-neutral-800 flex items-center justify-between flex-wrap p-6">
-                        <div class="flex items-center flex-shrink-0 text-white mr-6">
-                            <span class="font-semibold text-xl tracking-tight"><a href="/">Decapsulate Podcast</a></span>
-                        </div>
-                        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-                            <div class="text-xl lg:flex-grow">
-                                // <a href="index.html#about" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                //     About
-                                // </a>
-                                // <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                //     Listen
-                                // </a>
-                                // <a href="" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                //     Credits
-                                // </a>
-                                <a href="/decapsulate-mp3.xml" class="underline block lg:inline-block lg:mt-0 text-black-200 hover:text-white mr-4">
-                                   Podcast Feed
+            <body>
+                <main class="container">
+                <header>
+                    <nav>
+                        <ul>
+                            <li><a href="/">Decapsulate Podcast</a></li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="/decapsulate-mp3.xml">
+                                    Podcast Feed
                                 </a>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </nav>
+                </header>
 
-                    <div class="border-neutral-900 border-8 container mx-auto">
+                <section>
+                {inner}
+                </section>
 
-                    <br/>
-                    <br/>
-                    <h2 class="slogan"><b class="text-2xl" > "" </b></h2>
-                        {inner}
-                    </div>
-            { footer() }
+                <section>
+                { footer() }
+                </section>
 
+                </main>
             </body>
         </html>
     }
@@ -281,12 +275,7 @@ impl<T: GlobalAttributes> HtmxAttributes for T {}
 
 fn footer() -> impl Renderable {
     rsx! {
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-        <p class="border-neutral-900 border-8 text-xs">"Decapsulate is a NAMTAO production, licensed under CC BY-NC 4.0, made with <3 in 2024"</p>
+        <p>"Decapsulate is a NAMTAO production, licensed under CC BY-NC 4.0, made with <3 in 2024"</p>
     }
 }
 
