@@ -155,26 +155,20 @@ fn build_episode(episode: Metadata) -> impl Renderable {
 
     template(maud_move! {
         hgroup {
-            h1 { ( episode.title ) }
-            p { ( episode.date ) }
+            h1 { (episode.title) }
+            p { (episode.date) }
         }
         section {
-            div {
-                @for keyword in episode.keywords {
-                    kbd { ( keyword ) }
-                    " "
-                }
+            @for keyword in episode.keywords {
+                kbd { (keyword) }
+                " "
             }
         }
         section {
-            div { audio controls src=( format!("/audio/DC{num}.mp3")) {} }
+            audio controls src=(format!("/audio/DC{num}.mp3")) {}
         }
-        blockquote {
-            div { ( episode.description ) }
-        }
-        section {
-            div { ( transcript ) }
-        }
+        blockquote { (episode.description) }
+        section { (transcript) }
     })
 }
 
