@@ -220,11 +220,13 @@ fn template(inner: impl Renderable) -> impl Renderable {
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <meta name="color-scheme" content="light dark">
                 <meta http-equiv="x-clacks-overhead" content="GNU Terry Pratchett" />
-                <link
-                rel="stylesheet"
-                href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-                >
-
+                <link rel="stylesheet"
+                    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+                <link rel="stylesheet"
+                    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
+                <style>
+                    ":root {background-color: var(--pico-color-zinc-950) !important;}"
+                </style>
             </head>
 
             <body>
@@ -232,9 +234,15 @@ fn template(inner: impl Renderable) -> impl Renderable {
                 <header>
                     <nav>
                         <ul>
-                            <li><a href="/">Decapsulate Podcast</a></li>
+                            <li><a class="contrast" href="/"><h4>Decapsulate Podcast</h4></a></li>
                         </ul>
                         <ul>
+                            <li>
+                                <a href="#" class="secondary">Patreon</a>
+                            </li>
+                            <li>
+                                <a href="https://discord.gg/mCY2bBmDKZ">Discord</a>
+                            </li>
                             <li>
                                 <a href="/decapsulate-mp3.xml">Podcast Feed</a>
                             </li>
