@@ -236,9 +236,7 @@ fn template(inner: impl Renderable) -> impl Renderable {
                         </ul>
                         <ul>
                             <li>
-                                <a href="/decapsulate-mp3.xml">
-                                    Podcast Feed
-                                </a>
+                                <a href="/decapsulate-mp3.xml">Podcast Feed</a>
                             </li>
                         </ul>
                     </nav>
